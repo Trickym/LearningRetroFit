@@ -34,9 +34,11 @@ import java.lang.StringBuilder
                 ) {
                     val responseBody = response.body()!!
                     for(each in responseBody){
-                        string.append(each.title)
+                        string.append("Title : ${each.title}")
                         string.append("\n")
+                        string.append("---------------------")
                         string.append("\n")
+
                     }
                     tv.text = string
                 }
