@@ -17,7 +17,7 @@ class AdapterData(private val dataList : List<DemoDataItem>):RecyclerView.Adapte
         val currentDataItem = dataList[position]
         holder.userId.text = "User Id : ${currentDataItem.userId}"
         holder.dataId.text = "Data Id : ${currentDataItem.id}"
-        holder.title.text = "Title : ${currentDataItem.title}"
+        holder.title.text = "Title : ${currentDataItem.getUniqueName(currentDataItem.id,currentDataItem.title)}"
     }
 
     override fun getItemCount(): Int {
