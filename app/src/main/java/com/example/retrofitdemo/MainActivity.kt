@@ -3,6 +3,9 @@
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -11,15 +14,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.StringBuilder
 
     class MainActivity : AppCompatActivity() {
-        private lateinit var tv:TextView
+        private var recyclerView: RecyclerView?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tv = findViewById(R.id.txt_view)
+        recyclerView= findViewById(R.id.recycler_view)
         getDemoData()
     }
 
-    private fun getDemoData() {
+    private fun  getDemoData(){
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("https://jsonplaceholder.typicode.com/")
@@ -33,18 +36,13 @@ import java.lang.StringBuilder
                     response: Response<List<DemoDataItem>?>
                 ) {
                     val responseBody = response.body()!!
-                    for(each in responseBody){
-                        string.append("Title : ${each.title}")
-                        string.append("\n")
-                        string.append("---------------------")
-                        string.append("\n")
-
-                    }
-                    tv.text = string
+                    recyclerView!!.adapter = AdapterData(responseBody)
+                    recyclerView!!.layoutManager = LinearLayoutManager(this@MainActivity)
+                    recyclerView!!.setHasFixedSize(true)
                 }
 
                 override fun onFailure(call: Call<List<DemoDataItem>?>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    Toast.makeText(this@MainActivity,"Something went wrong!",Toast.LENGTH_SHORT).show()
                 }
             })
     }
